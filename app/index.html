@@ -3,91 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vice Cover Maker — GTA 6-style poster studio</title>
+<title>Neon Vice Cover Studio — GTA-style cover art maker</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
-    <span class="brand-mark">VC</span>
-    <span class="brand-text"><strong>VICE COVER MAKER</strong><em>GTA 6-style poster studio &middot; works offline</em></span>
+    <span class="brand-mark">NV</span>
+    <span class="brand-text">
+      <strong>NEON VICE COVER STUDIO</strong>
+      <small>GTA-style poster maker · works offline</small>
+    </span>
   </div>
   <div class="top-actions">
-    <button id="undoBtn" type="button" title="Undo">Undo</button>
-    <button id="redoBtn" type="button" title="Redo">Redo</button>
-    <button id="exportBtn" type="button" class="primary">Export PNG</button>
+    <button id="btnUndo" class="btn ghost" disabled>Undo</button>
+    <button id="btnRedo" class="btn ghost" disabled>Redo</button>
+    <button id="btnRandom" class="btn ghost">Randomize</button>
+    <button id="btnReset" class="btn ghost">Reset</button>
+    <button id="btnExportAll" class="btn ghost">Export all 4 sizes</button>
+    <button id="btnExport" class="btn primary">Export PNG</button>
   </div>
 </header>
 
-<main class="workspace">
-  <aside class="panel" id="controls">
+<div class="workspace">
+  <aside class="panel-controls">
     <section>
-      <h2>1 &middot; Photos</h2>
-      <label class="file-btn">Add your photos
-        <input id="fileInput" type="file" accept="image/*" multiple hidden>
-      </label>
-      <p class="hint">Or drop a photo onto a panel in the preview. Click a panel to select it, drag to pan, scroll to zoom.</p>
-      <div class="samples" id="samples"></div>
+      <h2>1 · Photos</h2>
+      <button id="btnAddPhotos" class="btn accent wide">Add your photos</button>
+      <input id="photoInput" type="file" accept="image/*" multiple hidden>
+      <p class="hint">Or drop a photo onto a panel. Click a panel to select it, drag to pan, scroll to zoom.</p>
+      <div id="photoTray" class="tray"></div>
       <div class="row">
-        <button id="fillAllBtn" type="button">Fill all panels</button>
-        <button id="applySelectedBtn" type="button">Apply to selected</button>
+        <button id="btnFillAll" class="btn ghost wide">Fill all panels</button>
+        <button id="btnApplySelected" class="btn ghost wide">Apply to selected</button>
       </div>
     </section>
 
     <section>
-      <h2>2 &middot; Layout</h2>
-      <div class="choices" id="layoutChoices"></div>
+      <h2>2 · Layout</h2>
+      <div id="layoutRow" class="chips"></div>
     </section>
 
     <section>
-      <h2>3 &middot; Colour grade</h2>
-      <div class="choices" id="gradeChoices"></div>
+      <h2>3 · Colour grade</h2>
+      <div id="gradeRow" class="chips"></div>
     </section>
 
     <section>
-      <h2>4 &middot; Caption</h2>
+      <h2>4 · Caption</h2>
       <label class="field">Title
-        <input id="titleInput" type="text" value="VICE CITY" maxlength="24">
+        <input id="titleInput" type="text" maxlength="24" value="VICE CITY">
       </label>
       <label class="field">Subtitle
-        <input id="subtitleInput" type="text" value="Neon Nights" maxlength="40">
+        <input id="subInput" type="text" maxlength="32" value="Neon Nights">
       </label>
-      <label class="check"><input id="halftoneInput" type="checkbox" checked> Halftone title block</label>
-      <label class="check"><input id="grainInput" type="checkbox" checked> Film grain</label>
-      <label class="check"><input id="vignetteInput" type="checkbox" checked> Vignette</label>
+      <label class="field">Badge ribbon
+        <input id="badgeInput" type="text" maxlength="14" value="VICE HEAT">
+      </label>
+      <label class="field">Heat meter
+        <span id="heatRow" class="heat-row"></span>
+      </label>
+      <label class="check"><input id="chkHalftone" type="checkbox" checked> Halftone title block</label>
+      <label class="check"><input id="chkGrain" type="checkbox" checked> Film grain</label>
+      <label class="check"><input id="chkVignette" type="checkbox" checked> Vignette</label>
+      <label class="check"><input id="chkSkyline" type="checkbox" checked> Neon skyline</label>
+      <label class="check"><input id="chkPalms" type="checkbox" checked> Palm silhouettes</label>
     </section>
 
     <section>
-      <h2>5 &middot; Selected panel</h2>
+      <h2>5 · Selected panel</h2>
       <label class="field">Zoom
-        <input id="zoomInput" type="range" min="1" max="2.5" step="0.01" value="1">
+        <input id="zoomRange" type="range" min="1" max="3" step="0.05" value="1">
       </label>
       <div class="row">
-        <button id="resetCropBtn" type="button">Reset crop</button>
-        <button id="clearPanelBtn" type="button">Clear panel</button>
+        <button id="btnCropReset" class="btn ghost wide">Reset crop</button>
+        <button id="btnClearPanel" class="btn ghost wide">Clear panel</button>
       </div>
-      <p class="hint" id="selectedLabel">Panel 1 selected</p>
+      <p id="selInfo" class="hint">Panel 1 of 4 selected</p>
     </section>
 
     <section>
-      <h2>6 &middot; Export size</h2>
-      <div class="choices" id="sizeChoices"></div>
+      <h2>6 · Export size</h2>
+      <div id="sizeRow" class="chips"></div>
       <p class="hint">Exports a PNG at the exact post size. No photo ever leaves your machine.</p>
     </section>
   </aside>
 
-  <section class="stage-wrap">
-    <div class="stage" id="stage">
-      <canvas id="coverCanvas" width="1080" height="1350"></canvas>
-      <p class="drop-hint">Drop photos here</p>
-    </div>
-    <p class="stage-note" id="stageNote">Hero + 3 panels &middot; Sunset grade &middot; 1080 &times; 1350</p>
-  </section>
-</main>
+  <main id="stage" class="stage">
+    <canvas id="coverCanvas"></canvas>
+    <p id="statusLine" class="status">Hero + 3 · Sunset grade · 1080 × 1350</p>
+  </main>
+</div>
 
-<footer class="foot">
-  <span>Original fan-style poster maker. Not affiliated with Rockstar Games. Fonts: Anton &amp; Pacifico (SIL OFL).</span>
-</footer>
+<footer class="footnote">Original fan-style poster maker. Not affiliated with Rockstar Games. Fonts: Anton &amp; Pacifico (SIL OFL 1.1).</footer>
 
 <script type="module" src="src/app.js"></script>
 </body>
