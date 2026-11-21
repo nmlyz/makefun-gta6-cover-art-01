@@ -1,8 +1,8 @@
 # Neon Vice Cover Studio
 
 [![GTA 6 Cover Art](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01)
-[![Rank](https://make.fun/badge/gta6-cover-art-01/nmlyz/makefun-gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
-[![Reward](https://make.fun/badge/gta6-cover-art-01/nmlyz/makefun-gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Rank](https://make.fun/badge/gta6-cover-art-01/nmlyz/neon-vice-cover-studio/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Reward](https://make.fun/badge/gta6-cover-art-01/nmlyz/neon-vice-cover-studio/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
 
 Turn any photo into GTA 6-style cover art: a multi-panel neon poster with a
 sunset grade, bold gradient caption lettering and a neon script subtitle,
