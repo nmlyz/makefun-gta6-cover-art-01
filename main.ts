@@ -1,25 +1,16 @@
-// Neon Vice Cover Studio — entry program (Node 22, standard library only).
-// Copies the app and its screenshots into the output directory and writes
-// the dossier the gate compares byte for byte.
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { buildDossier } from './vendor/makefun-app.ts';
+import { cp, mkdir, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { buildDossier } from "./vendor/makefun-app.ts";
 
-const root = dirname(fileURLToPath(import.meta.url));
-const outDir = process.env.MAKEFUN_OUTPUT_DIR || '/output';
+const here = dirname(fileURLToPath(import.meta.url));
+const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
-function copyTree(name: string): void {
-  const from = join(root, name);
-  const to = join(outDir, name);
-  if (!existsSync(from)) return;
-  rmSync(to, { recursive: true, force: true });
-  cpSync(from, to, { recursive: true });
-}
-
-mkdirSync(outDir, { recursive: true });
-copyTree('app');
-copyTree('screenshots');
+await mkdir(outDir, { recursive: true });
+await cp(join(here, "app"), join(outDir, "app"), { recursive: true });
+await cp(join(here, "screenshots"), join(outDir, "screenshots"), {
+  recursive: true,
+});
 
 const dossier = buildDossier(outDir, {
   text_max_bytes: 163840,
@@ -28,5 +19,6 @@ const dossier = buildDossier(outDir, {
   app_max_bytes: 50331648,
   app_path_max_bytes: 1000,
 });
-writeFileSync(join(outDir, 'dossier.json'), dossier);
-console.log(`wrote ${outDir}/dossier.json (${dossier.length} bytes)`);
+
+await writeFile(join(outDir, "dossier.json"), dossier);
+console.log(`dossier written to ${join(outDir, "dossier.json")}`);

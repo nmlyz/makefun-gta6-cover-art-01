@@ -1,101 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Neon Vice Cover Studio — GTA-style cover art maker</title>
+<title>Neon Vice Cover Studio — GTA 6-style cover art</title>
+<meta name="description" content="Turn any photo into GTA 6-style neon cover art: multi-panel poster, sunset grade, bold caption lettering, one-click PNG export. Offline, free, no upload.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
     <span class="brand-mark">NV</span>
-    <span class="brand-text">
-      <strong>NEON VICE COVER STUDIO</strong>
-      <small>GTA-style poster maker · works offline</small>
-    </span>
+    <div>
+      <h1>Neon Vice <span>Cover Studio</span></h1>
+      <p class="tagline">GTA 6-style cover art, made from your photos — offline, free, no upload.</p>
+    </div>
   </div>
   <div class="top-actions">
-    <button id="btnUndo" class="btn ghost" disabled>Undo</button>
-    <button id="btnRedo" class="btn ghost" disabled>Redo</button>
-    <button id="btnRandom" class="btn ghost">Randomize</button>
-    <button id="btnReset" class="btn ghost">Reset</button>
-    <button id="btnExportAll" class="btn ghost">Export all 4 sizes</button>
-    <button id="btnExport" class="btn primary">Export PNG</button>
+    <button id="undoBtn" type="button" class="btn ghost" title="Undo (Ctrl+Z)">↩ Undo</button>
+    <button id="redoBtn" type="button" class="btn ghost" title="Redo (Ctrl+Shift+Z)">↪ Redo</button>
+    <button id="randomBtn" type="button" class="btn">🎲 Randomize</button>
+    <button id="resetBtn" type="button" class="btn ghost">Reset</button>
   </div>
 </header>
 
-<div class="workspace">
-  <aside class="panel-controls">
-    <section>
-      <h2>1 · Photos</h2>
-      <button id="btnAddPhotos" class="btn accent wide">Add your photos</button>
-      <input id="photoInput" type="file" accept="image/*" multiple hidden>
-      <p class="hint">Or drop a photo onto a panel. Click a panel to select it, drag to pan, scroll to zoom.</p>
-      <div id="photoTray" class="tray"></div>
-      <div class="row">
-        <button id="btnFillAll" class="btn ghost wide">Fill all panels</button>
-        <button id="btnApplySelected" class="btn ghost wide">Apply to selected</button>
-      </div>
+<main class="layout">
+  <aside class="controls" aria-label="Cover controls">
+    <section class="group">
+      <h2>1 · Layout</h2>
+      <div id="layoutBtns" class="chips"></div>
     </section>
 
-    <section>
-      <h2>2 · Layout</h2>
-      <div id="layoutRow" class="chips"></div>
+    <section class="group">
+      <h2>2 · Grade</h2>
+      <div id="gradeBtns" class="swatches"></div>
     </section>
 
-    <section>
-      <h2>3 · Colour grade</h2>
-      <div id="gradeRow" class="chips"></div>
-    </section>
-
-    <section>
-      <h2>4 · Caption</h2>
-      <label class="field">Title
-        <input id="titleInput" type="text" maxlength="24" value="VICE CITY">
+    <section class="group">
+      <h2>3 · Photo <span id="panelLabel" class="hint">Panel 1 of 9</span></h2>
+      <p class="help">Click a panel on the cover, drag it to reposition the photo, scroll to zoom.</p>
+      <label class="field">
+        <span>Photo</span>
+        <select id="panelPhoto"></select>
       </label>
-      <label class="field">Subtitle
-        <input id="subInput" type="text" maxlength="32" value="Neon Nights">
-      </label>
-      <label class="field">Badge ribbon
-        <input id="badgeInput" type="text" maxlength="14" value="VICE HEAT">
-      </label>
-      <label class="field">Heat meter
-        <span id="heatRow" class="heat-row"></span>
-      </label>
-      <label class="check"><input id="chkHalftone" type="checkbox" checked> Halftone title block</label>
-      <label class="check"><input id="chkGrain" type="checkbox" checked> Film grain</label>
-      <label class="check"><input id="chkVignette" type="checkbox" checked> Vignette</label>
-      <label class="check"><input id="chkSkyline" type="checkbox" checked> Neon skyline</label>
-      <label class="check"><input id="chkPalms" type="checkbox" checked> Palm silhouettes</label>
-    </section>
-
-    <section>
-      <h2>5 · Selected panel</h2>
-      <label class="field">Zoom
+      <button id="uploadBtn" type="button" class="btn wide">＋ Upload your photo</button>
+      <input id="fileInput" type="file" accept="image/*" hidden>
+      <label class="field">
+        <span>Zoom <b id="zoomVal">100%</b></span>
         <input id="zoomRange" type="range" min="1" max="3" step="0.05" value="1">
       </label>
-      <div class="row">
-        <button id="btnCropReset" class="btn ghost wide">Reset crop</button>
-        <button id="btnClearPanel" class="btn ghost wide">Clear panel</button>
-      </div>
-      <p id="selInfo" class="hint">Panel 1 of 4 selected</p>
+      <label class="field">
+        <span>Position X</span>
+        <input id="xRange" type="range" min="-1" max="1" step="0.05" value="0">
+      </label>
+      <label class="field">
+        <span>Position Y</span>
+        <input id="yRange" type="range" min="-1" max="1" step="0.05" value="0">
+      </label>
     </section>
 
-    <section>
-      <h2>6 · Export size</h2>
-      <div id="sizeRow" class="chips"></div>
-      <p class="hint">Exports a PNG at the exact post size. No photo ever leaves your machine.</p>
+    <section class="group">
+      <h2>4 · Caption</h2>
+      <label class="field">
+        <span>Title</span>
+        <input id="titleInput" type="text" value="NEON VICE" maxlength="24" autocomplete="off">
+      </label>
+      <label class="field">
+        <span>Neon subtitle</span>
+        <input id="subtitleInput" type="text" value="Vice City Nights" maxlength="40" autocomplete="off">
+      </label>
+      <label class="field">
+        <span>Badge ribbon</span>
+        <input id="badgeInput" type="text" value="EST. 2026" maxlength="18" autocomplete="off">
+      </label>
+      <div class="field">
+        <span>Heat meter</span>
+        <div id="heatBtns" class="stars"></div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>5 · Finish</h2>
+      <label class="check"><input id="grainToggle" type="checkbox" checked> Film grain</label>
+      <label class="check"><input id="vignetteToggle" type="checkbox" checked> Vignette</label>
+      <label class="check"><input id="halftoneToggle" type="checkbox" checked> Halftone title block</label>
+    </section>
+
+    <section class="group export">
+      <h2>6 · Export PNG</h2>
+      <div class="export-grid">
+        <button type="button" class="btn wide" data-export="0">⬇ 1080 × 1080</button>
+        <button type="button" class="btn wide" data-export="1">⬇ 1080 × 1350</button>
+        <button type="button" class="btn wide" data-export="2">⬇ 1920 × 1080</button>
+        <button type="button" class="btn wide" data-export="3">⬇ 1080 × 1920 Story</button>
+      </div>
+      <button id="exportAllBtn" type="button" class="btn primary wide">⬇ Export all sizes</button>
+      <p id="status" class="status" role="status">Ready — pick a layout, drop in a photo, export.</p>
     </section>
   </aside>
 
-  <main id="stage" class="stage">
-    <canvas id="coverCanvas"></canvas>
-    <p id="statusLine" class="status">Hero + 3 · Sunset grade · 1080 × 1350</p>
-  </main>
-</div>
-
-<footer class="footnote">Original fan-style poster maker. Not affiliated with Rockstar Games. Fonts: Anton &amp; Pacifico (SIL OFL 1.1).</footer>
+  <section class="preview" aria-label="Live cover preview">
+    <div id="stageWrap" class="stage-wrap">
+      <canvas id="stage" width="900" height="900"></canvas>
+      <p class="drop-hint">Drop a photo here to fill the selected panel</p>
+    </div>
+    <p class="preview-note">Live preview is square — exports render at the exact size you pick.</p>
+  </section>
+</main>
 
 <script type="module" src="src/app.js"></script>
 </body>

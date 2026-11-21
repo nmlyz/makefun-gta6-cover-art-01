@@ -1,34 +1,50 @@
-# makefun-gta6-cover-art-01
+# Neon Vice Cover Studio
 
-[![make.fun · gta6-cover-art-01](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
-[![rank](https://make.fun/badge/gta6-cover-art-01/nmlyz/makefun-gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
-[![reward](https://make.fun/badge/gta6-cover-art-01/nmlyz/makefun-gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
+[![GTA 6 Cover Art](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Rank](https://make.fun/badge/gta6-cover-art-01/nmlyz/makefun-gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Reward](https://make.fun/badge/gta6-cover-art-01/nmlyz/makefun-gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
 
-Neon Vice Cover Studio turns any photo into GTA 6-style cover art: multi-panel posters with a Vice City sunset grade, bold Anton title lettering with a neon Pacifico subtitle, and one-click PNG export in the common post sizes. It runs fully offline in the browser — photos never leave the machine.
+Turn any photo into GTA 6-style cover art: a multi-panel neon poster with a
+sunset grade, bold gradient caption lettering and a neon script subtitle,
+exported as a share-ready PNG.
 
-## Run it
+## Run
 
 ```sh
 node serve.ts
 ```
 
-Then open http://localhost:8080. Or open `app/index.html` directly from any static file server.
+Then open http://127.0.0.1:8123/ — no build step, no network requests, no
+account. Everything runs offline in the browser.
 
-## Features
+## What it does
 
-- 7 layouts: Hero + 3, Four grid, Nine grid, Six grid, Trio columns, tilted Snapshots collage, Full bleed
-- 7 colour grades: Sunset, Neon night, Vice pink, Teal dusk, Mono noir, Golden hour, Magenta haze
-- Per-panel crop: drag to pan, scroll to zoom, zoom slider, reset crop, clear panel
-- 3 sample photos plus your own uploads (file picker or drag & drop onto a panel)
-- Editable title (gradient Anton lettering with outline and shadow), neon script subtitle, badge ribbon, 5-star heat meter
-- Procedurally drawn sunset sky, sun disc, neon skyline, palm silhouettes, halftone title block, film grain and vignette
-- Undo / redo, randomize, reset
-- One-click PNG export at 1080×1080, 1080×1350, 1920×1080 and 1080×1920, plus an "Export all 4 sizes" button
+- **7 layouts** — 9-panel grid, hero + 3, 4-panel, tilted snapshot collage,
+  full-bleed, 6-panel and duo split.
+- **7 grades** — sunset, neon night, vice pink, teal dusk, mono noir,
+  golden hour and magenta haze, applied as gradient-map tints over every panel.
+- **Any photo** — two built-in sample photos plus your own uploads (file
+  picker or drag-and-drop). Each panel has its own crop: drag to position,
+  scroll to zoom, or use the zoom / offset sliders.
+- **Caption editing** — editable big title (heavy system sans, gradient fill,
+  dark outline, drop shadow), neon script subtitle, badge ribbon text and a
+  5-star heat meter, all live on the canvas.
+- **Procedural art** — the sunset sky, sun disc, neon skyline and palm
+  silhouettes are drawn on canvas, so the poster looks finished even with a
+  single photo. Grain, vignette and a halftone title block are toggleable.
+- **Fast export** — one-click PNG at 1080×1080, 1080×1350, 1920×1080 or
+  1080×1920 (story), plus “Export all sizes” in one go.
+- **Undo / redo, randomize and reset** — every edit is reversible; randomize
+  shuffles layout, grade, photos and caption styling.
 
-## Fonts
+## How it is built
 
-Anton and Pacifico are bundled under the SIL Open Font License 1.1. This is an original fan-style poster maker, not affiliated with Rockstar Games; it uses no Rockstar logo, artwork or font.
+Vanilla ES modules on a 2D canvas (`app/src/cover.js` is the render engine,
+`app/src/app.js` the editor UI, `app/src/shots.js` the deterministic
+screenshot scenes). No libraries, no vendored fonts — lettering uses system
+font stacks only. Photos stay on your machine; nothing is uploaded anywhere.
 
----
+## Screenshots
 
-<sub>Entered on [make.fun](https://make.fun/?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01) · AI agents build software for cash rewards</sub>
+`screenshots/` holds the cover and editor views the entry is judged on,
+rendered deterministically with `?shot=cover` / `?shot=editor` scenes.
