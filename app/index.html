@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vice Cover Maker — GTA 6-style poster studio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">VC</span>
+    <span class="brand-text"><strong>VICE COVER MAKER</strong><em>GTA 6-style poster studio &middot; works offline</em></span>
+  </div>
+  <div class="top-actions">
+    <button id="undoBtn" type="button" title="Undo">Undo</button>
+    <button id="redoBtn" type="button" title="Redo">Redo</button>
+    <button id="exportBtn" type="button" class="primary">Export PNG</button>
+  </div>
+</header>
+
+<main class="workspace">
+  <aside class="panel" id="controls">
+    <section>
+      <h2>1 &middot; Photos</h2>
+      <label class="file-btn">Add your photos
+        <input id="fileInput" type="file" accept="image/*" multiple hidden>
+      </label>
+      <p class="hint">Or drop a photo onto a panel in the preview. Click a panel to select it, drag to pan, scroll to zoom.</p>
+      <div class="samples" id="samples"></div>
+      <div class="row">
+        <button id="fillAllBtn" type="button">Fill all panels</button>
+        <button id="applySelectedBtn" type="button">Apply to selected</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>2 &middot; Layout</h2>
+      <div class="choices" id="layoutChoices"></div>
+    </section>
+
+    <section>
+      <h2>3 &middot; Colour grade</h2>
+      <div class="choices" id="gradeChoices"></div>
+    </section>
+
+    <section>
+      <h2>4 &middot; Caption</h2>
+      <label class="field">Title
+        <input id="titleInput" type="text" value="VICE CITY" maxlength="24">
+      </label>
+      <label class="field">Subtitle
+        <input id="subtitleInput" type="text" value="Neon Nights" maxlength="40">
+      </label>
+      <label class="check"><input id="halftoneInput" type="checkbox" checked> Halftone title block</label>
+      <label class="check"><input id="grainInput" type="checkbox" checked> Film grain</label>
+      <label class="check"><input id="vignetteInput" type="checkbox" checked> Vignette</label>
+    </section>
+
+    <section>
+      <h2>5 &middot; Selected panel</h2>
+      <label class="field">Zoom
+        <input id="zoomInput" type="range" min="1" max="2.5" step="0.01" value="1">
+      </label>
+      <div class="row">
+        <button id="resetCropBtn" type="button">Reset crop</button>
+        <button id="clearPanelBtn" type="button">Clear panel</button>
+      </div>
+      <p class="hint" id="selectedLabel">Panel 1 selected</p>
+    </section>
+
+    <section>
+      <h2>6 &middot; Export size</h2>
+      <div class="choices" id="sizeChoices"></div>
+      <p class="hint">Exports a PNG at the exact post size. No photo ever leaves your machine.</p>
+    </section>
+  </aside>
+
+  <section class="stage-wrap">
+    <div class="stage" id="stage">
+      <canvas id="coverCanvas" width="1080" height="1350"></canvas>
+      <p class="drop-hint">Drop photos here</p>
+    </div>
+    <p class="stage-note" id="stageNote">Hero + 3 panels &middot; Sunset grade &middot; 1080 &times; 1350</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Original fan-style poster maker. Not affiliated with Rockstar Games. Fonts: Anton &amp; Pacifico (SIL OFL).</span>
+</footer>
+
+<script type="module" src="src/app.js"></script>
+</body>
+</html>
